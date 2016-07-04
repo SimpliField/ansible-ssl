@@ -1,0 +1,78 @@
+---
+- local_action: stat path="{{ ssl_local_privkey_path }}"
+  register: ssl_stat_privkey
+  become: no
+  tags:
+  - ssl
+
+- local_action: stat path="{{ ssl_local_cert_path }}"
+  register: ssl_stat_cert
+  become: no
+  tags:
+  - ssl
+
+- name: test if privkey file is needed
+  fail:
+    msg: "Privkey file {{ ssl_local_privkey_path }} is missing"
+  when: not ssl_stat_privkey.stat.exists and ssl_stat_cert.stat.exists
+  tags:
+  - ssl
+
+- name: test if cert file is needed
+  fail:
+    msg: "Cert file {{ ssl_local_cert_path }} is missing"
+  when: ssl_stat_privkey.stat.exists and not ssl_stat_cert.stat.exists
+  tags:
+  - ssl
+
+- name: copy SSL certificates
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ssl_path_owner }}"
+    group: "{{ ssl_path_group }}"
+    mode: "700"
+  when: >
+    ( ssl_stat_privkey.stat.exists and ssl_stat_cert.stat.exists )
+    and ( ssl_local_privkey_data is undefined and ssl_local_cert_data is undefined )
+  with_items:
+  - { src: "{{ ssl_local_cert_path }}", dest: "{{ ssl_cert_path }}" }
+  - { src: "{{ ssl_local_privkey_path }}", dest: "{{ ssl_privkey_path }}" }
+  tags:
+  - ssl
+
+- name: copy SSL certificate data
+  copy:
+    content: "{{ item.content }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ ssl_path_owner }}"
+    group: "{{ ssl_path_group }}"
+    mode: "700"
+  when: ssl_local_privkey_data is defined and ssl_local_cert_data is defined
+  with_items:
+  - { content: "{{ ssl_local_cert_data }}", dest: "{{ ssl_cert_path }}" }
+  - { content: "{{ ssl_local_privkey_data }}", dest: "{{ ssl_privkey_path }}" }
+  no_log: true
+  tags:
+  - ssl
+
+- local_action: stat path="{{ ssl_pem_path }}"
+  register: stat_pem
+  tags:
+  - ssl
+
+- name: assemble crt and key into pem file
+  assemble:
+    dest: "{{ ssl_pem_path }}"
+    src: "{{ ssl_path }}"
+    regexp: "({{ ssl_privkey_path | basename }}|{{ ssl_path | basename }})"
+  when: not stat_pem.exists
+  tags:
+  - ssl
+
+# https://weakdh.org/
+- name: generate strong DHE parameter
+  command: openssl dhparam -out {{ssl_dhparam_path}} {{ssl_dhparam_size}} creates={{ssl_dhparam_path}}
+  when: ssl_generate_dh_param
+  tags:
+  - ssl
