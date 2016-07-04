@@ -56,7 +56,9 @@
   tags:
   - ssl
 
-- local_action: stat path="{{ ssl_pem_path }}"
+- name: check if pem exist
+  stat:
+    path: "{{ ssl_pem_path }}"
   register: stat_pem
   tags:
   - ssl
@@ -66,7 +68,7 @@
     dest: "{{ ssl_pem_path }}"
     src: "{{ ssl_path }}"
     regexp: "({{ ssl_privkey_path | basename }}|{{ ssl_path | basename }})"
-  when: not stat_pem.exists
+  when: not stat_pem.stat.exists
   tags:
   - ssl
 
