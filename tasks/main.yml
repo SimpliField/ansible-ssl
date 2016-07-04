@@ -50,8 +50,8 @@
     mode: "700"
   when: ssl_local_privkey_data is defined and ssl_local_cert_data is defined
   with_items:
-  - { content: "{{ ssl_local_cert_data }}", dest: "{{ ssl_cert_path }}" }
-  - { content: "{{ ssl_local_privkey_data }}", dest: "{{ ssl_privkey_path }}" }
+  - { content: "{{ ssl_local_cert_data | default(omit) }}", dest: "{{ ssl_cert_path }}" }
+  - { content: "{{ ssl_local_privkey_data | default(omit) }}", dest: "{{ ssl_privkey_path }}" }
   no_log: true
   tags:
   - ssl
