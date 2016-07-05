@@ -17,10 +17,10 @@ galaxy_info:
   - openssl
   - certificates
 dependencies:
-- src: SimpliField.packages
+- role: SimpliField.packages
   packages:
   - openssl
-- src: SimpliField.path
+- role: SimpliField.path
   path: "/etc/ssl/{{ ssl_common_name }}"
   owner: "{{ ssl_path_owner }}"
   group: "{{ ssl_path_group }}"
