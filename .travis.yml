@@ -34,7 +34,7 @@ script:
     && (echo 'Idempotence test: pass' && exit 0)
     || (echo 'Idempotence test: fail' && exit 1)
   # Check /etc/ssl/test
-  - ls -lah /etc/ssl/test
+  - sudo ls -lah /etc/ssl/test
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
