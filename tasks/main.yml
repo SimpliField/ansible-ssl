@@ -48,6 +48,7 @@
     owner: "{{ ssl_path_owner }}"
     group: "{{ ssl_path_group }}"
     mode: "700"
+  register: ssl_copy_cert_data
   when: ssl_local_privkey_data is defined and ssl_local_cert_data is defined
   with_items:
   - { content: "{{ ssl_local_cert_data | default(omit) }}", dest: "{{ ssl_cert_path }}" }
@@ -68,7 +69,7 @@
     dest: "{{ ssl_pem_path }}"
     src: "{{ ssl_path }}"
     regexp: "({{ ssl_privkey_path | basename }}|{{ ssl_path | basename }})"
-  when: not stat_pem.stat.exists
+  when: (not stat_pem.stat.exists) or (ssl_copy_cert_data.changed)
   tags:
   - ssl
 
