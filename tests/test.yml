@@ -4,3 +4,5 @@
   roles:
     - role: ansible-ssl
       ssl_common_name: "test"
+      ssl_path_owner: "root"
+      ssl_path_group: "root"
