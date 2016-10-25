@@ -5,10 +5,9 @@ ssl_path: "/etc/ssl/{{ssl_common_name}}"
 ssl_path_owner: "www"
 ssl_path_group: "www"
 
-ssl_local_privkey_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_common_name}}.key"
-ssl_local_cert_path: "{{inventory_dir|default(playbook_dir)}}/files/ssl/{{ssl_common_name}}.crt"
 ssl_privkey_path: "{{ssl_path}}/{{ssl_common_name}}.key"
 ssl_cert_path: "{{ssl_path}}/{{ssl_common_name}}.crt"
+ssl_intermediate_cert_path: "{{ssl_path}}/{{ssl_common_name}}_intermediate.crt"
 ssl_pem_path: "{{ssl_path}}/{{ssl_common_name}}.pem"
 ssl_dhparam_path: "{{ssl_path}}/{{ssl_common_name}}.dh"
 

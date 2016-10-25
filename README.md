@@ -16,11 +16,18 @@ ssl_common_name: "myCert"
 ssl_path: "/etc/ssl/myCert"
 ssl_path_owner: "www"
 ssl_path_group: "www"
+# Your csr/.key file
 ssl_privkey_data: |
   -----BEGIN PRIVATE KEY-----
   …
   -----END PRIVATE KEY-----
+# Your crt
 ssl_cert_data: |
+  -----BEGIN CERTIFICATE-----
+  …
+  -----END CERTIFICATE-----
+# Intermediate crt (The second part of the pem file)
+ssl_intermediate_cert_data: |
   -----BEGIN CERTIFICATE-----
   …
   -----END CERTIFICATE-----
