@@ -5,6 +5,8 @@ ssl_path: "/etc/ssl/{{ssl_common_name}}"
 ssl_path_owner: "www"
 ssl_path_group: "www"
 
+ssl_cert_self_signed: false
+ssl_cert_self_signed_days: 3650
 ssl_privkey_path: "{{ssl_path}}/{{ssl_common_name}}.key"
 ssl_cert_path: "{{ssl_path}}/{{ssl_common_name}}.crt"
 ssl_intermediate_cert_path: "{{ssl_path}}/{{ssl_common_name}}_intermediate.crt"

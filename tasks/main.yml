@@ -9,11 +9,26 @@
   register: ssl_copy_cert_data
   when:
     - item.content != ''
+    - ssl_cert_self_signed == false
   with_items:
   - { content: "{{ ssl_privkey_data | default('') }}", dest: "{{ ssl_privkey_path }}" }
   - { content: "{{ ssl_cert_data | default('') }}", dest: "{{ ssl_cert_path }}" }
   - { content: "{{ ssl_intermediate_cert_data | default('') }}", dest: "{{ ssl_intermediate_cert_path }}" }
   no_log: true
+  tags:
+  - ssl
+
+- name: generate private key
+  command: openssl genrsa -out {{ ssl_privkey_path }} 2048
+  when:
+    - ssl_cert_self_signed != false
+  tags:
+  - ssl
+
+- name: generate self signed certificate
+  command: openssl req -new -x509 -days {{ ssl_cert_self_signed_days }} -key {{ ssl_privkey_path }} -out {{ ssl_cert_path }} -subj "/C=US/ST=state/L=location/O=organization/CN=domain"
+  when:
+    - ssl_cert_self_signed != false
   tags:
   - ssl
 
