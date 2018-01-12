@@ -38,7 +38,7 @@ ssl_dhparam_size: "2048"
 Dependencies
 ------------
 
-- [SimpliField.packages](https://galaxy.ansible.com/SimpliField/packages/)
+- [GROG.package](https://galaxy.ansible.com/GROG/package/)
 - [SimpliField.path](https://galaxy.ansible.com/SimpliField/path/)
 
 Example Playbook

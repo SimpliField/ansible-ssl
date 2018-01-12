@@ -12,14 +12,17 @@ galaxy_info:
     - vivid
     - wily
     - xenial
+  - name: EL
+    versions:
+    - 7
   galaxy_tags:
   - ssl
   - openssl
   - certificates
 dependencies:
-- role: SimpliField.packages
-  packages:
-  - openssl
+- role: GROG.package
+  package_list:
+  - name: openssl
 - role: SimpliField.path
   path: "/etc/ssl/{{ ssl_common_name }}"
   owner: "{{ ssl_path_owner }}"
