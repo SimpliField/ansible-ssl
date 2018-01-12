@@ -20,7 +20,7 @@ install:
   - printf '[defaults]\nroles_path=../' >ansible.cfg
 
   # Install dependencies
-  - ansible-galaxy install SimpliField.packages SimpliField.path
+  - ansible-galaxy install GROG.package SimpliField.path
 
 script:
   # Basic role syntax check
