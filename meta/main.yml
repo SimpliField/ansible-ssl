@@ -24,3 +24,4 @@ dependencies:
   path: "/etc/ssl/{{ ssl_common_name }}"
   owner: "{{ ssl_path_owner }}"
   group: "{{ ssl_path_group }}"
+  mode: '755'
